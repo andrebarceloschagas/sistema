@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+
+{% block titulo %} Deletar veiculo {{object.modelo}} {% endblock %}
+
+{% block conteudo %}
+
+<form action="/veiculo/deletar/{{object.pk}}/" method="post">
+    {% csrf_token %}
+
+    <center>
+        <div class="alert alert-danger" role="alert">
+            <p> Tem certeza que deseja excluir o veiculo "{{object}}" ?</p>
+        </div>
+        <input type="submit" value="Confirmar" class="btn btn-danger" />
+    </center>
+</form>
+
+{% endblock %}

@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+
+{% block titulo %} Cadastro de novos veículos {% endblock %}
+
+{% block conteudo %}
+
+<form action="/veiculo/novo/" method="post" enctype="multipart/form-data">
+  {% csrf_token %}
+  <div class="container">
+    <div class="row d-flex">
+      <div class="col-4 d-flex flex-column mb-3">
+        <label for="marca" class="form-label">Marca</label>
+        {{ form.marca }}
+      </div>
+      <div class="col-4 d-flex flex-column">
+      <label for="modelo" class="form-label">Modelo</label>
+        {{ form.modelo }}
+      </div>
+      <div class="col-4 d-flex flex-column">
+        <label for="ano" class="form-label">Ano</label>
+        {{ form.ano }}
+      </div>
+      <div class="col-4 d-flex flex-column mb-3">
+        <label for="cor" class="form-label">Cor</label>
+        {{ form.cor }}
+      </div>
+      <div class="col-4 d-flex flex-column">
+        <label for="combustivel" class="form-label">Combustível</label>
+        {{ form.combustivel }}
+      </div>
+      <div class="col-12 d-flex flex-column">
+        <label for="foto" class="form-label">Foto</label>
+        {{ form.foto }}
+      </div>
+    </div>
+    <input type="submit" value="Salvar" class="btn btn-info text-white mt-3 px-5 float-end" />
+  </div>
+</form>
+
+{% endblock %}
