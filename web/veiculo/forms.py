@@ -8,6 +8,6 @@ class FormularioVeiculo(forms.ModelForm):
         for visible in self.visible_fields():
             visible.field.widget.attrs['class'] = 'form-control'
             visible.field.widget.attrs['placeholder'] = visible.field.label
-    class Meta():
+    class Meta:
         model = Veiculo
-        exclude = []
+        fields = '__all__'

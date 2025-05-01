@@ -1,6 +1,6 @@
 {% extends "base.html" %}
 
-{% block titulo %} Cadastro de novos veículos {% endblock %}
+{% block title %}Cadastrar Veículo - AutoFácil Tocantins{% endblock %}
 
 {% block conteudo %}
 
@@ -13,7 +13,7 @@
         {{ form.marca }}
       </div>
       <div class="col-4 d-flex flex-column">
-      <label for="modelo" class="form-label">Modelo</label>
+        <label for="modelo" class="form-label">Modelo</label>
         {{ form.modelo }}
       </div>
       <div class="col-4 d-flex flex-column">
@@ -36,5 +36,4 @@
     <input type="submit" value="Salvar" class="btn btn-info text-white mt-3 px-5 float-end" />
   </div>
 </form>
-
 {% endblock %}

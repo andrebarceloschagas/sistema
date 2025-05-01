@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 from django.contrib.auth import authenticate, login, logout
 from django.views.generic import View
 from django.shortcuts import render, redirect

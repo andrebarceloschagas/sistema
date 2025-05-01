@@ -4,7 +4,7 @@
     {% load static %} {% load django_bootstrap5 %} {% bootstrap_css %}
     {% bootstrap_javascript %}
     <meta charset="UTF-8" />
-    <title>{% block title %}Desenvolvimento web-mobile{% endblock %}</title>
+    <title>{% block title %}AutoFácil Tocantins{% endblock %}</title>
   </head>
   <body class="bg-light">
     <div class="container d-flex flex-column my-5">
@@ -48,7 +48,6 @@
           </a>
           {% endif %}
 
-          <!-- <button class="btn btn-outline-info"><a>Login</a></button> -->
         </div>
         <button
           class="btn btn-outline-info dropdown-toggle"
@@ -64,9 +63,12 @@
         </button>
         <ul class="dropdown-menu">
           {% if user.is_authenticated %}
-          <li><a class="dropdown-item" href="/logout">Sair</a></li>
+            {% if user.is_staff %}
+              <li><a class="dropdown-item" href="/admin/">Administrador</a></li>
+            {% endif %}
+            <li><a class="dropdown-item" href="/logout">Sair</a></li>
           {% else %}
-          <li><a class="dropdown-item" href="/login">Entrar</a></li>
+            <li><a class="dropdown-item" href="/login">Entrar</a></li>
           {% endif %}
         </ul>
         {% endblock %}
