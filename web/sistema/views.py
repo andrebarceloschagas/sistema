@@ -1,7 +1,8 @@
 from django.contrib.auth import authenticate, login, logout
+from django.contrib import messages
 from django.views.generic import View
 from django.shortcuts import render, redirect
-# from django.http import HttpResponse
+from django.urls import reverse
 from django.conf import settings
 from rest_framework.authtoken.views import ObtainAuthToken
 from rest_framework.authtoken.models import Token
@@ -51,10 +52,10 @@ class Login(View):
 
             # Verifica se o usuário ainda está ativo no sistema
             if user.is_active:
-                    login(request, user)
-                    # return HttpResponse('Login efetuado com sucesso!')
-                    return redirect("/veiculo")
-
+                login(request, user)
+                messages.success(request, 'Login efetuado com sucesso!')
+                return redirect(reverse('veiculo:listar-veiculos'))
+            
             return render(request, 'autenticacao.html', {'mensagem': 'Usuário inativo!'})
             
         return render(request, 'autenticacao.html', {'mensagem': 'Login ou senha inválido!'})

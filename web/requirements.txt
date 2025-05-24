@@ -1,9 +1,32 @@
 
+# Core Django
 Django==5.2
-django-bootstrap5==25.1
-django-cors-headers==4.7.0
 djangorestframework==3.16.0
-pillow==11.1.0
-poetry==2.1.2
-poetry-core==2.1.2
+
+# Database
 psycopg2-binary==2.9.10
+
+# Frontend & UI
+django-bootstrap5==25.1
+
+# API & CORS
+django-cors-headers==4.7.0
+
+# Image handling
+Pillow==11.1.0
+
+# Environment variables
+python-decouple==3.8
+
+# Development tools (optional)
+django-debug-toolbar==4.4.6
+django-extensions==3.2.3
+
+# Testing
+pytest-django==4.9.0
+factory-boy==3.3.1
+
+# Code quality
+flake8==7.1.1
+black==24.8.0
+isort==5.13.2

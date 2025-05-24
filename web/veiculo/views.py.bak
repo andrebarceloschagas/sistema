@@ -1,15 +1,25 @@
 # -*- coding: utf-8 -*-
 from django.shortcuts import render
-from django.views.generic import ListView, CreateView, UpdateView, DeleteView, View
+from django.vieclass FotoVeiculo(LoginObrigatorio, View):
+    """
+    View para mostrar imagem de um veículo
+    """
+
+    def get(self, request, arquivo):
+        try:
+            veiculo = Veiculo.objects.get(foto='veiculo/fotos/{}'.format(arquivo))
+            return FileResponse(veiculo.foto)
+        except ObjectDoesNotExist:
+            raise Http404("Veículo não encontrado")
+        except Exception as exception:
+            raise exceptionport ListView, CreateView, UpdateView, DeleteView
 from django.db import models
-from django.http import FileResponse, Http404, JsonResponse
-from django.core.exceptions import ObjectDoesNotExist, PermissionDenied
+from django.http import FileResponse, Http404
+from django.core.exceptions import ObjectDoesNotExist
 from django.urls import reverse_lazy
-from django.contrib.auth.mixins import UserPassesTestMixin
 from rest_framework.generics import ListAPIView
 from rest_framework.authentication import TokenAuthentication
-from rest_framework import permissions, filters
-from rest_framework.pagination import PageNumberPagination
+from rest_framework import permissions
 
 from sistema.bibliotecas import LoginObrigatorio
 from veiculo.models import Veiculo
@@ -75,30 +85,7 @@ class ListarVeiculos(LoginObrigatorio, ListView):
         return context
 
 
-class VeiculoOwnerMixin(UserPassesTestMixin):
-    """
-    Mixin que verifica se o usuário é dono do veículo ou tem permissões especiais
-    """
-    def test_func(self):
-        """
-        Testa se o usuário logado possui permissão para acessar/modificar o veículo
-        """
-        # Verificar se o objeto está relacionado a algum anúncio do usuário
-        obj = self.get_object()
-        return (
-            self.request.user.is_staff or
-            self.request.user.has_perm('veiculo.can_view_detailed_info') or
-            obj.anuncios.filter(usuario=self.request.user).exists()
-        )
-        
-    def handle_no_permission(self):
-        """
-        Comportamento quando o usuário não tem permissão
-        """
-        raise PermissionDenied("Você não tem permissão para acessar este veículo.")
-
-
-class FotoVeiculo(LoginObrigatorio, View):
+class FotoVeiculo(LoginObrigatorio):
     """
     View para mostrar imagem de um veículo
     """
@@ -108,10 +95,9 @@ class FotoVeiculo(LoginObrigatorio, View):
             veiculo = Veiculo.objects.get(foto='veiculo/fotos/{}'.format(arquivo))
             return FileResponse(veiculo.foto)
         except ObjectDoesNotExist:
-            raise Http404("Veículo não encontrado")
+            raise Http404("Veículo não encontrado")
         except Exception as exception:
             raise exception
-
 
 class CriarVeiculos(LoginObrigatorio, CreateView):
     """
@@ -122,8 +108,7 @@ class CriarVeiculos(LoginObrigatorio, CreateView):
     template_name = 'veiculo/novo.html'
     success_url = reverse_lazy('veiculo:listar-veiculos')
 
-
-class EditarVeiculos(LoginObrigatorio, VeiculoOwnerMixin, UpdateView):
+class EditarVeiculos(LoginObrigatorio, UpdateView):
     """
     View para editar veículos já cadastrados.
     """
@@ -132,8 +117,7 @@ class EditarVeiculos(LoginObrigatorio, VeiculoOwnerMixin, UpdateView):
     template_name = 'veiculo/editar.html'
     success_url = reverse_lazy('veiculo:listar-veiculos')
 
-
-class DeletarVeiculos(LoginObrigatorio, VeiculoOwnerMixin, DeleteView):
+class DeletarVeiculos(LoginObrigatorio, DeleteView):
     """
     View para deletar veículos.
     """
@@ -142,31 +126,16 @@ class DeletarVeiculos(LoginObrigatorio, VeiculoOwnerMixin, DeleteView):
     success_url = reverse_lazy('veiculo:listar-veiculos')
 
 
-class VeiculoApiPagination(PageNumberPagination):
-    """
-    Configuração de paginação para API de Veículos
-    """
-    page_size = 10
-    page_size_query_param = 'page_size'
-    max_page_size = 50
-
-
 class APIListarVeiculos(ListAPIView):
     """
     API endpoint que permite listar veículos
     
     * Requer autenticação por token
     * Suporta filtragem por marca, ano e combustível
-    * Suporta ordenação por ano, marca
     """
     serializer_class = SerializadorVeiculo
     authentication_classes = [TokenAuthentication]
     permission_classes = [permissions.IsAuthenticated]
-    pagination_class = VeiculoApiPagination
-    filter_backends = [filters.SearchFilter, filters.OrderingFilter]
-    search_fields = ['modelo']
-    ordering_fields = ['ano', 'quilometragem', 'marca']
-    ordering = ['-created_at']
 
     def get_queryset(self):
         queryset = Veiculo.objects.all()

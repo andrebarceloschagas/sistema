@@ -4,14 +4,14 @@
 
 {% block conteudo %}
   <div class="container px-5">
-    <form action="/veiculo/" method="GET">
+    <form action="{% url 'veiculo:listar-veiculos' %}" method="GET">
       <div class="d-flex justify-content-between align-items-center gap-3 mb-4">
         <div class="d-flex justify-content-between align-items-center gap-3 mb-4 flex-1">
           <h1>Veículos</h1>
           <h6 class="text-info mt-2">({{ veiculos|length }} disponíveis)</h6>
         </div>
         <div class="d-flex btn-group flex-0">
-          <input class="form-control" name="pesquisa" type="text" placeholder="Pesquisar" />
+          <input class="form-control" name="pesquisa" type="text" placeholder="Pesquisar" value="{{ filtros_ativos.pesquisa }}" />
           <input class="btn btn-info text-white fw-bolder" type="submit" value="Pesquisar" />
         </div>
       </div>
@@ -37,13 +37,17 @@
           </div>
           <hr />
           <div class="d-flex gap-3 justify-content-end">
-            <a href="/veiculo/{{ v.id }}" class="btn btn-outline-info fw-bolder">
+            <a href="{% url 'veiculo:editar-veiculo' v.id %}" class="btn btn-outline-info fw-bolder">
               Editar
             </a>
-            <a href="/veiculo/deletar/{{ v.id }}" class="btn btn-info text-white fw-bolder">
+            <a href="{% url 'veiculo:deletar-veiculo' v.id %}" class="btn btn-info text-white fw-bolder">
               Excluir
             </a>
           </div>
+        </div>
+      {% empty %}
+        <div class="alert alert-info">
+          Nenhum veículo encontrado. <a href="{% url 'veiculo:criar-veiculo' %}" class="alert-link">Cadastre um novo veículo</a>.
         </div>
       {% endfor %}
     </div>

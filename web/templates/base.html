@@ -12,9 +12,9 @@
         id="menu-superior"
         class="d-flex justify-content-between align-items-center mb-2"
       >
-        {% block menu-superior %}
+        {% block menu_superior %}
         <div class="d-flex flex-row gap-2">
-          <a href="/" class="btn btn-info text-white fw-bolder">
+          <a href="{% url 'index' %}" class="btn btn-info text-white fw-bolder">
             Página Inicial
           </a>
           {% if user.is_authenticated %}
@@ -27,8 +27,8 @@
            Veículos
           </button>
           <ul class="dropdown-menu">
-            <li><a class="dropdown-item" href="/veiculo">Visualizar todos</a></li>
-            <li><a class="dropdown-item" href="/veiculo/novo">Cadastrar</a></li>
+            <li><a class="dropdown-item" href="{% url 'veiculo:listar-veiculos' %}">Visualizar todos</a></li>
+            <li><a class="dropdown-item" href="{% url 'veiculo:criar-veiculo' %}">Cadastrar</a></li>
           </ul>
           <button
             class="btn btn-outline-info dropdown-toggle"
@@ -39,11 +39,11 @@
            Anúncios
           </button>
           <ul class="dropdown-menu">
-            <li><a class="dropdown-item" href="/anuncio">Visualizar todos</a></li>
-            <li><a class="dropdown-item" href="/anuncio/novo">Cadastrar</a></li>
+            <li><a class="dropdown-item" href="{% url 'anuncio:listar-anuncios' %}">Visualizar todos</a></li>
+            <li><a class="dropdown-item" href="{% url 'anuncio:criar-anuncio' %}">Cadastrar</a></li>
           </ul>
           {% else %}
-          <a href="/anuncio" class="btn btn-outline-info">
+          <a href="{% url 'anuncio:listar-anuncios' %}" class="btn btn-outline-info">
             Anúncios
           </a>
           {% endif %}
@@ -64,11 +64,11 @@
         <ul class="dropdown-menu">
           {% if user.is_authenticated %}
             {% if user.is_staff %}
-              <li><a class="dropdown-item" href="/admin/">Administrador</a></li>
+              <li><a class="dropdown-item" href="{% url 'admin:index' %}">Administrador</a></li>
             {% endif %}
-            <li><a class="dropdown-item" href="/logout">Sair</a></li>
+            <li><a class="dropdown-item" href="{% url 'logout' %}">Sair</a></li>
           {% else %}
-            <li><a class="dropdown-item" href="/login">Entrar</a></li>
+            <li><a class="dropdown-item" href="{% url 'login' %}">Entrar</a></li>
           {% endif %}
         </ul>
         {% endblock %}

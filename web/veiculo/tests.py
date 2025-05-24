@@ -1,16 +1,16 @@
 from django.contrib.auth.models import User
 from django.test import TestCase, Client
 from django.urls import reverse
-from datetime import datetime
-from veiculo.models import *
-from veiculo.forms import *
+from django.utils import timezone
+from veiculo.models import Veiculo
+from veiculo.forms import FormularioVeiculo
+
 
 class TestesModelVeiculo(TestCase):
-
     def setUp(self):
         self.instancia = Veiculo(
             marca=1,
-            modelo='Celta',
+            modelo='ABCDE',
             ano=datetime.now().year,
             cor=1,
             combustivel=1
@@ -25,8 +25,8 @@ class TestesModelVeiculo(TestCase):
         self.instancia.ano = datetime.now().year - 10
         self.assertEqual(self.instancia.anos_de_uso(), 10)
 
-class TestesViewListarVeiculos(TestCase):
 
+class TestesViewListarVeiculos(TestCase):
     def setUp(self):
         self.user = User.objects.create_user(
             username='teste',
@@ -34,12 +34,13 @@ class TestesViewListarVeiculos(TestCase):
         )
         self.client.force_login(self.user)
         self.url = reverse('listar-veiculos')
-        Veiculo(marca=1, modelo='Celta', ano=2, cor=1, combustivel=1).save()
+        Veiculo(marca=1, modelo='ABCDE', ano=2002, cor=1, combustivel=1).save()
 
     def test_get(self):
         response = self.client.get(self.url)
         self.assertEqual(response.status_code, 200)
         self.assertEqual(len(response.context['veiculos']), 1)
+
 
 class TestesViewCriarVeiculos(TestCase):
     def setUp(self):
@@ -54,31 +55,32 @@ class TestesViewCriarVeiculos(TestCase):
         response = self.client.get(self.url)
         self.assertEqual(response.status_code, 200)
         self.assertIsInstance(response.context['form'], FormularioVeiculo)
-    
+
     def test_post(self):
         data = {
             'marca': 1,
             'modelo': 'Celta',
-            'ano': 2,
+            'ano': 2002,
             'cor': 1,
             'combustivel': 1
         }
         response = self.client.post(self.url, data)
         self.assertEqual(response.status_code, 302)
         self.assertRedirects(response, reverse('listar-veiculos'))
-
         self.assertEqual(Veiculo.objects.count(), 1)
         self.assertEqual(Veiculo.objects.first().modelo, 'Celta')
 
-class TestesViewEditarVeiculos(TestCase):
 
+class TestesViewEditarVeiculos(TestCase):
     def setUp(self):
         self.user = User.objects.create_user(
             username='teste',
             password='teste123',
         )
         self.client.force_login(self.user)
-        self.instancia = Veiculo.objects.create(marca=1, modelo='Celta', ano=2, cor=1, combustivel=1)
+        self.instancia = Veiculo.objects.create(
+            marca=1, modelo='Celta', ano=2002, cor=1, combustivel=1
+        )
         self.url = reverse('editar-veiculo', kwargs={'pk': self.instancia.pk})
 
     def test_get(self):
@@ -93,27 +95,28 @@ class TestesViewEditarVeiculos(TestCase):
         data = {
             'marca': 1,
             'modelo': 'Celta',
-            'ano': 2,
+            'ano': 2002,
             'cor': 1,
             'combustivel': 1
         }
         response = self.client.post(self.url, data)
         self.assertEqual(response.status_code, 302)
         self.assertRedirects(response, reverse('listar-veiculos'))
-
         self.assertEqual(Veiculo.objects.count(), 1)
         self.assertEqual(Veiculo.objects.first().modelo, 'Celta')
         self.assertEqual(Veiculo.objects.first().pk, self.instancia.pk)
 
-class TestesViewDeletarVeiculos(TestCase):
 
+class TestesViewDeletarVeiculos(TestCase):
     def setUp(self):
         self.user = User.objects.create_user(
             username='teste',
             password='teste123',
         )
         self.client.force_login(self.user)
-        self.instancia = Veiculo.objects.create(marca=1, modelo='Celta', ano=2, cor=1, combustivel=1)
+        self.instancia = Veiculo.objects.create(
+            marca=1, modelo='Celta', ano=2002, cor=1, combustivel=1
+        )
         self.url = reverse('deletar-veiculo', kwargs={'pk': self.instancia.pk})
 
     def test_get(self):
