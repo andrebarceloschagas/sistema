@@ -11,58 +11,65 @@
             <li class="breadcrumb-item active" aria-current="page">Detalhes</li>
         </ol>
     </nav>
-    
+
     <div class="row">
         <div class="col-md-8">
             <div class="card mb-4">
                 <div class="card-header d-flex justify-content-between align-items-center">
                     <h4 class="mb-0">{{ anuncio.veiculo.get_marca_display }} {{ anuncio.veiculo.modelo }}</h4>
                     <div>
-                        <span class="badge bg-{{ anuncio.is_ativo|yesno:'success,secondary' }}">{{ anuncio.get_status_display }}</span>
+                        <span class="badge bg-{{ anuncio.is_ativo|yesno:'success,secondary' }}">{{
+                            anuncio.get_status_display }}</span>
                         {% if anuncio.destaque %}
-                            <span class="badge bg-warning text-dark">Destaque</span>
+                        <span class="badge bg-warning text-dark">Destaque</span>
                         {% endif %}
                     </div>
                 </div>
                 <div class="card-body">
                     {% if anuncio.veiculo.foto %}
-                        <img src="{{ anuncio.veiculo.foto.url }}" class="img-fluid mb-3" alt="{{ anuncio.veiculo }}">
+                    <img src="{{ anuncio.veiculo.foto.url }}" class="img-fluid mb-3" alt="{{ anuncio.veiculo }}">
                     {% else %}
-                        <div class="bg-light text-center py-5 mb-3">
-                            <i class="bi bi-image" style="font-size: 5rem;"></i>
-                            <p>Sem imagem disponível</p>
-                        </div>
+                    <div class="bg-light text-center py-5 mb-3">
+                        <i class="bi bi-image" style="font-size: 5rem;"></i>
+                        <p>Sem imagem disponível</p>
+                    </div>
                     {% endif %}
-                    
+
                     <h5 class="card-title text-primary mb-4">R$ {{ anuncio.preco|floatformat:2 }}</h5>
-                    
+
                     <h6 class="fw-bold">Descrição</h6>
                     <p class="card-text">{{ anuncio.descricao|linebreaks }}</p>
-                    
+
                     <h6 class="fw-bold mt-4">Informações do Veículo</h6>
                     <div class="row">
                         <div class="col-md-6">
                             <ul class="list-group list-group-flush">
-                                <li class="list-group-item"><strong>Marca:</strong> {{ anuncio.veiculo.get_marca_display }}</li>
+                                <li class="list-group-item"><strong>Marca:</strong> {{ anuncio.veiculo.get_marca_display
+                                    }}</li>
                                 <li class="list-group-item"><strong>Modelo:</strong> {{ anuncio.veiculo.modelo }}</li>
                                 <li class="list-group-item"><strong>Ano:</strong> {{ anuncio.veiculo.ano }}</li>
-                                <li class="list-group-item"><strong>Cor:</strong> {{ anuncio.veiculo.get_cor_display }}</li>
+                                <li class="list-group-item"><strong>Cor:</strong> {{ anuncio.veiculo.get_cor_display }}
+                                </li>
                             </ul>
                         </div>
                         <div class="col-md-6">
                             <ul class="list-group list-group-flush">
-                                <li class="list-group-item"><strong>Combustível:</strong> {{ anuncio.veiculo.get_combustivel_display }}</li>
-                                <li class="list-group-item"><strong>Quilometragem:</strong> {{ anuncio.veiculo.quilometragem }} km</li>
-                                <li class="list-group-item"><strong>Categoria:</strong> {{ anuncio.veiculo.categoria_idade }}</li>
-                                <li class="list-group-item"><strong>Aceita Troca:</strong> {{ anuncio.aceita_troca|yesno:"Sim,Não" }}</li>
+                                <li class="list-group-item"><strong>Combustível:</strong> {{
+                                    anuncio.veiculo.get_combustivel_display }}</li>
+                                <li class="list-group-item"><strong>Quilometragem:</strong> {{
+                                    anuncio.veiculo.quilometragem }} km</li>
+                                <li class="list-group-item"><strong>Categoria:</strong> {{
+                                    anuncio.veiculo.categoria_idade }}</li>
+                                <li class="list-group-item"><strong>Aceita Troca:</strong> {{
+                                    anuncio.aceita_troca|yesno:"Sim,Não" }}</li>
                             </ul>
                         </div>
                     </div>
-                    
+
                     {% if anuncio.veiculo.placa %}
-                        <div class="alert alert-info mt-3">
-                            <strong>Placa:</strong> {{ anuncio.veiculo.placa }}
-                        </div>
+                    <div class="alert alert-info mt-3">
+                        <strong>Placa:</strong> {{ anuncio.veiculo.placa }}
+                    </div>
                     {% endif %}
                 </div>
                 <div class="card-footer text-muted">
@@ -72,58 +79,64 @@
                             <span class="mx-2">|</span>
                             <i class="bi bi-calendar"></i> Publicado há {{ anuncio.dias_publicado }} dias
                         </div>
-                        
+
                         {% if user.is_authenticated and anuncio.usuario == user or user.is_staff %}
-                            <div>
-                                <a href="{% url 'anuncio:editar-anuncio' anuncio.id %}" class="btn btn-sm btn-outline-primary">Editar</a>
-                                
-                                {% if anuncio.is_ativo %}
-                                    <button class="btn btn-sm btn-success btn-marcar-vendido" data-id="{{ anuncio.id }}">Marcar como Vendido</button>
-                                {% endif %}
-                                
-                                <a href="{% url 'anuncio:deletar-anuncio' anuncio.id %}" class="btn btn-sm btn-outline-danger">Excluir</a>
-                            </div>
+                        <div>
+                            <a href="{% url 'anuncio:editar-anuncio' anuncio.id %}"
+                                class="btn btn-sm btn-outline-primary">Editar</a>
+
+                            {% if anuncio.is_ativo %}
+                            <button class="btn btn-sm btn-success btn-marcar-vendido" data-id="{{ anuncio.id }}">Marcar
+                                como Vendido</button>
+                            {% endif %}
+
+                            <a href="{% url 'anuncio:deletar-anuncio' anuncio.id %}"
+                                class="btn btn-sm btn-outline-danger">Excluir</a>
+                        </div>
                         {% endif %}
                     </div>
                 </div>
             </div>
         </div>
-        
+
         <div class="col-md-4">
             <div class="card mb-4">
                 <div class="card-header">
                     <h5 class="mb-0">Contato</h5>
                 </div>
                 <div class="card-body">
-                    <p><strong>Anunciante:</strong> {{ anuncio.usuario.get_full_name|default:anuncio.usuario.username }}</p>
-                    
+                    <p><strong>Anunciante:</strong> {{ anuncio.usuario.get_full_name|default:anuncio.usuario.username }}
+                    </p>
+
                     {% if anuncio.contato_telefone %}
-                        <p><strong>Telefone:</strong> <a href="tel:{{ anuncio.contato_telefone }}">{{ anuncio.contato_telefone }}</a></p>
+                    <p><strong>Telefone:</strong> <a href="tel:{{ anuncio.contato_telefone }}">{{
+                            anuncio.contato_telefone }}</a></p>
                     {% endif %}
-                    
+
                     <a href="mailto:{{ anuncio.usuario.email }}" class="btn btn-primary w-100 mt-3">
                         <i class="bi bi-envelope"></i> Enviar mensagem
                     </a>
                 </div>
             </div>
-            
+
             {% if anuncios_similares %}
-                <div class="card">
-                    <div class="card-header">
-                        <h5 class="mb-0">Anúncios Similares</h5>
-                    </div>
-                    <div class="list-group list-group-flush">
-                        {% for similar in anuncios_similares %}
-                            <a href="{% url 'anuncio:detalhar-anuncio' similar.id %}" class="list-group-item list-group-item-action">
-                                <div class="d-flex w-100 justify-content-between">
-                                    <h6 class="mb-1">{{ similar.veiculo.get_marca_display }} {{ similar.veiculo.modelo }}</h6>
-                                    <small>{{ similar.veiculo.ano }}</small>
-                                </div>
-                                <p class="mb-1 text-primary">R$ {{ similar.preco|floatformat:2 }}</p>
-                            </a>
-                        {% endfor %}
-                    </div>
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="mb-0">Anúncios Similares</h5>
                 </div>
+                <div class="list-group list-group-flush">
+                    {% for similar in anuncios_similares %}
+                    <a href="{% url 'anuncio:detalhar-anuncio' similar.id %}"
+                        class="list-group-item list-group-item-action">
+                        <div class="d-flex w-100 justify-content-between">
+                            <h6 class="mb-1">{{ similar.veiculo.get_marca_display }} {{ similar.veiculo.modelo }}</h6>
+                            <small>{{ similar.veiculo.ano }}</small>
+                        </div>
+                        <p class="mb-1 text-primary">R$ {{ similar.preco|floatformat:2 }}</p>
+                    </a>
+                    {% endfor %}
+                </div>
+            </div>
             {% endif %}
         </div>
     </div>
@@ -131,11 +144,11 @@
 
 {% block scripts %}
 <script>
-    document.addEventListener('DOMContentLoaded', function() {
+    document.addEventListener('DOMContentLoaded', function () {
         // Botão para marcar como vendido
         const vendidoBtns = document.querySelectorAll('.btn-marcar-vendido');
         vendidoBtns.forEach(btn => {
-            btn.addEventListener('click', function() {
+            btn.addEventListener('click', function () {
                 const anuncioId = this.dataset.id;
                 if (confirm('Tem certeza que deseja marcar este anúncio como vendido?')) {
                     fetch(`/anuncio/marcar-vendido/${anuncioId}/`, {
@@ -145,23 +158,23 @@
                             'Content-Type': 'application/json'
                         }
                     })
-                    .then(response => response.json())
-                    .then(data => {
-                        if (data.status === 'success') {
-                            alert('Anúncio marcado como vendido com sucesso!');
-                            window.location.reload();
-                        } else {
-                            alert('Erro: ' + data.message);
-                        }
-                    })
-                    .catch(error => {
-                        console.error('Erro:', error);
-                        alert('Ocorreu um erro ao processar sua solicitação.');
-                    });
+                        .then(response => response.json())
+                        .then(data => {
+                            if (data.status === 'success') {
+                                alert('Anúncio marcado como vendido com sucesso!');
+                                window.location.reload();
+                            } else {
+                                alert('Erro: ' + data.message);
+                            }
+                        })
+                        .catch(error => {
+                            console.error('Erro:', error);
+                            alert('Ocorreu um erro ao processar sua solicitação.');
+                        });
                 }
             });
         });
-        
+
         // Função para obter o valor de um cookie
         function getCookie(name) {
             let cookieValue = null;

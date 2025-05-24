@@ -3,53 +3,52 @@
 {% block title %}Listar Veículos - AutoFácil Tocantins{% endblock %}
 
 {% block conteudo %}
-  <div class="container px-5">
-    <form action="{% url 'veiculo:listar-veiculos' %}" method="GET">
-      <div class="d-flex justify-content-between align-items-center gap-3 mb-4">
-        <div class="d-flex justify-content-between align-items-center gap-3 mb-4 flex-1">
-          <h1>Veículos</h1>
-          <h6 class="text-info mt-2">({{ veiculos|length }} disponíveis)</h6>
-        </div>
-        <div class="d-flex btn-group flex-0">
-          <input class="form-control" name="pesquisa" type="text" placeholder="Pesquisar" value="{{ filtros_ativos.pesquisa }}" />
-          <input class="btn btn-info text-white fw-bolder" type="submit" value="Pesquisar" />
-        </div>
+<div class="container px-5">
+  <form action="{% url 'veiculo:listar-veiculos' %}" method="GET">
+    <div class="d-flex justify-content-between align-items-center gap-3 mb-4">
+      <div class="d-flex justify-content-between align-items-center gap-3 mb-4 flex-1">
+        <h1>Veículos</h1>
+        <h6 class="text-info mt-2">({{ veiculos|length }} disponíveis)</h6>
       </div>
-    </form>
-    <div class="d-flex flex-column gap-4 overflow-auto">
-      {% for v in veiculos %}
-        <div class="card px-4 py-4 rounded d-flex flex-column gap-1">
-          {% if v.foto %}
-            <img
-              src="{{ v.foto.url }}"
-              class="img-fluid rounded shadow"
-              style="width: 100%; max-height: 520px; object-fit: cover; object-position: center;"
-              alt="Foto do veículo {{ v }}"
-            />
-          {% else %}
-            Veículo sem foto
-          {% endif %}
-          <div>
-            <h6 class="m-0">{{ v.get_marca_display }}</h6>
-            <h3 class="mb-4">{{ v.modelo }}</h3>
-            <span class="badge bg-secondary text-white">{{ v.ano }}</span>
-            <span class="badge bg-secondary text-white">{{ v.get_cor_display }}</span>
-          </div>
-          <hr />
-          <div class="d-flex gap-3 justify-content-end">
-            <a href="{% url 'veiculo:editar-veiculo' v.id %}" class="btn btn-outline-info fw-bolder">
-              Editar
-            </a>
-            <a href="{% url 'veiculo:deletar-veiculo' v.id %}" class="btn btn-info text-white fw-bolder">
-              Excluir
-            </a>
-          </div>
-        </div>
-      {% empty %}
-        <div class="alert alert-info">
-          Nenhum veículo encontrado. <a href="{% url 'veiculo:criar-veiculo' %}" class="alert-link">Cadastre um novo veículo</a>.
-        </div>
-      {% endfor %}
+      <div class="d-flex btn-group flex-0">
+        <input class="form-control" name="pesquisa" type="text" placeholder="Pesquisar"
+          value="{{ filtros_ativos.pesquisa }}" />
+        <input class="btn btn-info text-white fw-bolder" type="submit" value="Pesquisar" />
+      </div>
     </div>
+  </form>
+  <div class="d-flex flex-column gap-4 overflow-auto">
+    {% for v in veiculos %}
+    <div class="card px-4 py-4 rounded d-flex flex-column gap-1">
+      {% if v.foto %}
+      <img src="{{ v.foto.url }}" class="img-fluid rounded shadow"
+        style="width: 100%; max-height: 520px; object-fit: cover; object-position: center;"
+        alt="Foto do veículo {{ v }}" />
+      {% else %}
+      Veículo sem foto
+      {% endif %}
+      <div>
+        <h6 class="m-0">{{ v.get_marca_display }}</h6>
+        <h3 class="mb-4">{{ v.modelo }}</h3>
+        <span class="badge bg-secondary text-white">{{ v.ano }}</span>
+        <span class="badge bg-secondary text-white">{{ v.get_cor_display }}</span>
+      </div>
+      <hr />
+      <div class="d-flex gap-3 justify-content-end">
+        <a href="{% url 'veiculo:editar-veiculo' v.id %}" class="btn btn-outline-info fw-bolder">
+          Editar
+        </a>
+        <a href="{% url 'veiculo:deletar-veiculo' v.id %}" class="btn btn-info text-white fw-bolder">
+          Excluir
+        </a>
+      </div>
+    </div>
+    {% empty %}
+    <div class="alert alert-info">
+      Nenhum veículo encontrado. <a href="{% url 'veiculo:criar-veiculo' %}" class="alert-link">Cadastre um novo
+        veículo</a>.
+    </div>
+    {% endfor %}
   </div>
+</div>
 {% endblock %}

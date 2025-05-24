@@ -1,81 +1,69 @@
 <!DOCTYPE html>
 <html lang="pt-br">
-  <head>
-    {% load static %} {% load django_bootstrap5 %} {% bootstrap_css %}
-    {% bootstrap_javascript %}
-    <meta charset="UTF-8" />
-    <title>{% block title %}AutoFácil Tocantins{% endblock %}</title>
-  </head>
-  <body class="bg-light">
-    <div class="container d-flex flex-column my-5">
-      <div
-        id="menu-superior"
-        class="d-flex justify-content-between align-items-center mb-2"
-      >
-        {% block menu_superior %}
-        <div class="d-flex flex-row gap-2">
-          <a href="{% url 'index' %}" class="btn btn-info text-white fw-bolder">
-            Página Inicial
-          </a>
-          {% if user.is_authenticated %}
-          <button
-            class="btn btn-outline-info dropdown-toggle"
-            type="button"
-            data-bs-toggle="dropdown"
-            aria-expanded="false"
-          >
-           Veículos
-          </button>
-          <ul class="dropdown-menu">
-            <li><a class="dropdown-item" href="{% url 'veiculo:listar-veiculos' %}">Visualizar todos</a></li>
-            <li><a class="dropdown-item" href="{% url 'veiculo:criar-veiculo' %}">Cadastrar</a></li>
-          </ul>
-          <button
-            class="btn btn-outline-info dropdown-toggle"
-            type="button"
-            data-bs-toggle="dropdown"
-            aria-expanded="false"
-          >
-           Anúncios
-          </button>
-          <ul class="dropdown-menu">
-            <li><a class="dropdown-item" href="{% url 'anuncio:listar-anuncios' %}">Visualizar todos</a></li>
-            <li><a class="dropdown-item" href="{% url 'anuncio:criar-anuncio' %}">Cadastrar</a></li>
-          </ul>
-          {% else %}
-          <a href="{% url 'anuncio:listar-anuncios' %}" class="btn btn-outline-info">
-            Anúncios
-          </a>
-          {% endif %}
 
-        </div>
-        <button
-          class="btn btn-outline-info dropdown-toggle"
-          type="button"
-          data-bs-toggle="dropdown"
-          aria-expanded="false"
-        >
+<head>
+  {% load static %} {% load django_bootstrap5 %} {% bootstrap_css %}
+  {% bootstrap_javascript %}
+  <meta charset="UTF-8" />
+  <title>{% block title %}AutoFácil Tocantins{% endblock %}</title>
+</head>
+
+<body class="bg-light">
+  <div class="container d-flex flex-column my-5">
+    <div id="menu-superior" class="d-flex justify-content-between align-items-center mb-2">
+      {% block menu_superior %}
+      <div class="d-flex flex-row gap-2">
+        <a href="{% url 'index' %}" class="btn btn-info text-white fw-bolder">
+          Página Inicial
+        </a>
         {% if user.is_authenticated %}
-          Olá, {{ user }}
+        <button class="btn btn-outline-info dropdown-toggle" type="button" data-bs-toggle="dropdown"
+          aria-expanded="false">
+          Veículos
+        </button>
+        <ul class="dropdown-menu">
+          <li><a class="dropdown-item" href="{% url 'veiculo:listar-veiculos' %}">Visualizar todos</a></li>
+          <li><a class="dropdown-item" href="{% url 'veiculo:criar-veiculo' %}">Cadastrar</a></li>
+        </ul>
+        <button class="btn btn-outline-info dropdown-toggle" type="button" data-bs-toggle="dropdown"
+          aria-expanded="false">
+          Anúncios
+        </button>
+        <ul class="dropdown-menu">
+          <li><a class="dropdown-item" href="{% url 'anuncio:listar-anuncios' %}">Visualizar todos</a></li>
+          <li><a class="dropdown-item" href="{% url 'anuncio:criar-anuncio' %}">Cadastrar</a></li>
+        </ul>
+        {% else %}
+        <a href="{% url 'anuncio:listar-anuncios' %}" class="btn btn-outline-info">
+          Anúncios
+        </a>
+        {% endif %}
+
+      </div>
+      <button class="btn btn-outline-info dropdown-toggle" type="button" data-bs-toggle="dropdown"
+        aria-expanded="false">
+        {% if user.is_authenticated %}
+        Olá, {{ user }}
         {% else %}
         Olá, Convidado
         {% endif %}
-        </button>
-        <ul class="dropdown-menu">
-          {% if user.is_authenticated %}
-            {% if user.is_staff %}
-              <li><a class="dropdown-item" href="{% url 'admin:index' %}">Administrador</a></li>
-            {% endif %}
-            <li><a class="dropdown-item" href="{% url 'logout' %}">Sair</a></li>
-          {% else %}
-            <li><a class="dropdown-item" href="{% url 'login' %}">Entrar</a></li>
-          {% endif %}
-        </ul>
-        {% endblock %}
-      </div>
-      <div id="conteudo" class="card rounded py-5">
-        {% block conteudo %}{% endblock %}
-      </div>
+      </button>
+      <ul class="dropdown-menu">
+        {% if user.is_authenticated %}
+        {% if user.is_staff %}
+        <li><a class="dropdown-item" href="{% url 'admin:index' %}">Administrador</a></li>
+        {% endif %}
+        <li><a class="dropdown-item" href="{% url 'logout' %}">Sair</a></li>
+        {% else %}
+        <li><a class="dropdown-item" href="{% url 'login' %}">Entrar</a></li>
+        {% endif %}
+      </ul>
+      {% endblock %}
     </div>
-  </body>
+    <div id="conteudo" class="card rounded py-5">
+      {% block conteudo %}{% endblock %}
+    </div>
+  </div>
+</body>
+
 </html>
